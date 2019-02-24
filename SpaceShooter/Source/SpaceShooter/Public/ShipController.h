@@ -29,6 +29,7 @@ public:
 	UPROPERTY(EditAnywhere)
 	UShapeComponent *CollisionBox;
 
+	/// 移动相关
 	UPROPERTY(EditAnywhere)
 	float Speed = 10.0f;
 
@@ -36,5 +37,14 @@ public:
 	void Move_YAxis(float AxisValue);
 
 	FVector CurrentVelocity;
+
+	/// 射击相关
+	// 后面要和GetWorld()->SpawnActor联合使用，动态创建对象
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	TSubclassOf<class ABulletController> BulletBlueprint;
+
+	void OnShoot();
+
+
 
 };

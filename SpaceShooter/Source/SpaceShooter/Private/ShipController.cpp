@@ -3,6 +3,7 @@
 #include "ShipController.h"
 
 #include <Components/BoxComponent.h>
+#include "BulletController.h"
 
 // Sets default values
 AShipController::AShipController()
@@ -47,6 +48,9 @@ void AShipController::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 	// 绑定输入事件与回调函数，MoveX MoveY是在Project Setting的Input中的名字
 	PlayerInputComponent->BindAxis("MoveX", this, &AShipController::Move_XAxis);
 	PlayerInputComponent->BindAxis("MoveY", this, &AShipController::Move_YAxis);
+
+	// 射击动作
+	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
 }
 
 // Move_XAxis
@@ -59,4 +63,17 @@ void AShipController::Move_XAxis(float AxisValue)
 void AShipController::Move_YAxis(float AxisValue)
 {
 	CurrentVelocity.Y = AxisValue * 100.0f;
+}
+
+// OnShoot action
+void AShipController::OnShoot()
+{
+	UWorld *World = GetWorld();
+
+	if (World) {
+		FVector Location = GetActorLocation();
+
+		// 创建一个新的bullet对象了
+		World->SpawnActor<ABulletController>(BulletBlueprint, Location, FRotator::ZeroRotator);
+	}
 }

@@ -30,7 +30,7 @@ void ABulletController::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// 向下移动
+	// 向上移动
 	FVector NewLocation = GetActorLocation();
 	NewLocation.X += Speed * DeltaTime;
 	SetActorLocation(NewLocation);
@@ -38,9 +38,8 @@ void ABulletController::Tick(float DeltaTime)
 	// 超出平板则销毁
 	if (NewLocation.X > 600.f) {
 		this->Destroy();
-
 		// 打印ActorName
-		FString ActorName = GetName();
-		UE_LOG(LogTemp, Warning, TEXT("Bullet %s destroyed"), *ActorName);
+		//FString ActorName = GetName();
+		//UE_LOG(LogTemp, Warning, TEXT("Bullet %s destroyed"), *ActorName);
 	}
 }

@@ -35,10 +35,8 @@ void AEnemyController::Tick(float DeltaTime)
 	// 超出平板则销毁
 	if (NewLocation.X < -600.f) {
 		this->Destroy();
-		
 		// 打印ActorName
-		FString ActorName = GetName();
-		UE_LOG(LogTemp, Warning, TEXT("Enemy %s destroyed"), *ActorName);
+		//FString ActorName = GetName();
 	}
 }
 

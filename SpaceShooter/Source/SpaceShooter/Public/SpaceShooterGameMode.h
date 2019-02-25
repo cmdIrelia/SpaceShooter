@@ -14,8 +14,13 @@ class SPACESHOOTER_API ASpaceShooterGameMode : public AGameMode
 {
 	GENERATED_BODY()
 
-	float MINIMUM_INTERVAL = 0.5f;
+public:
+	UPROPERTY(EditAnywhere, Category = "Spawning")
+	float MINIMUM_INTERVAL = 1.0f;
+	
+	UPROPERTY(EditAnywhere, Category = "Spawning")
 	float MAXIMUM_INTERVAL = 2.0f;
+
 	float TIME_TO_MINIMUM_INTERVAL = 30.0f;
 
 public:

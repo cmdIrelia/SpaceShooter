@@ -98,7 +98,7 @@ void AShipController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor *O
 {
 	if (OtherActor->IsA(AEnemyController::StaticClass())) {
 		float time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Ship Overlap."), time);
+		UE_LOG(LogTemp, Warning, TEXT("%f: Ship Overlap on %s caused Game Over."), time, *OtherActor->GetName());
 
 		Died = true;
 		this->SetActorHiddenInGame(true);

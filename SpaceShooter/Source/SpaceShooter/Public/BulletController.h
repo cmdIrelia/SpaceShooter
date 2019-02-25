@@ -23,11 +23,11 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	UShapeComponent *RootBox;
 
 	/// 运动相关
-	UPROPERTY(EditAnywhere)
+	UPROPERTY(EditDefaultsOnly)
 	float Speed = 400.0f;
 
 	/// 碰撞相关

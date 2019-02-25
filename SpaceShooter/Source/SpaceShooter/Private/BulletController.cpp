@@ -49,7 +49,6 @@ void ABulletController::Tick(float DeltaTime)
 		this->Destroy();
 		// ´òÓ¡ActorName
 		//FString ActorName = GetName();
-		//UE_LOG(LogTemp, Warning, TEXT("Bullet %s destroyed"), *ActorName);
 	}
 }
 
@@ -58,9 +57,7 @@ void ABulletController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor 
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
 	if (OtherActor->IsA(AEnemyController::StaticClass())) {
-		float time = GetWorld()->GetTimeSeconds();
-		UE_LOG(LogTemp, Warning, TEXT("%f: Bullet %s Overlap."), time, *GetName());
-
+		//float time = GetWorld()->GetTimeSeconds();
 		this->Destroy();
 		OtherActor->Destroy();
 	}

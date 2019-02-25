@@ -33,7 +33,7 @@ void AEnemyController::Tick(float DeltaTime)
 	SetActorLocation(NewLocation);
 
 	// 超出平板则销毁
-	if (NewLocation.X > 600.f) {
+	if (NewLocation.X < -600.f) {
 		this->Destroy();
 		
 		// 打印ActorName

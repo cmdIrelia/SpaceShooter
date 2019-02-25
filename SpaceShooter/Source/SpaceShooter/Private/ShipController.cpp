@@ -16,16 +16,20 @@ AShipController::AShipController()
 
 	// 构建一个默认会出现的Subobject，出现在detail树下面，名字为什么不叫root我也不知道.
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
-	
+
+	// 指定根
+	SetRootComponent(CollisionBox);
+
+	// 使其能够发生Overlap事件
 	//CollisionBox->bGenerateOverlapEvents = true;	//访问权限不对
 	CollisionBox->SetGenerateOverlapEvents(true);
+
 	//链接碰撞以后的回调函数
 	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AShipController::OnOverlap);
 
 	// AutoPossessPlayer 这个变量是Pawn类里面自带的
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
-	UE_LOG(LogTemp, Warning, TEXT("AShipController()"))
 }
 
 // Called when the game starts or when spawned
@@ -92,10 +96,10 @@ void AShipController::OnShoot()
 void AShipController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent,
 	int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
 {
-	float time = GetWorld()->GetTimeSeconds();
-	UE_LOG(LogTemp, Warning, TEXT("%f: Overlap Event."),time)
-
 	if (OtherActor->IsA(AEnemyController::StaticClass())) {
+		float time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: Ship Overlap."), time);
+
 		Died = true;
 		this->SetActorHiddenInGame(true);
 

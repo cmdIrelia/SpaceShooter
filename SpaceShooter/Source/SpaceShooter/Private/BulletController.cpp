@@ -3,6 +3,7 @@
 #include "BulletController.h"
 
 #include <Components/BoxComponent.h>
+#include "EnemyController.h"
 
 // Sets default values
 ABulletController::ABulletController()
@@ -13,13 +14,17 @@ ABulletController::ABulletController()
 	// 构建一个默认会出现的Subobject，出现在detail树下面，名字为什么不叫root我也不知道.
 	RootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
 
-	//使其能够参与发生Overlap事件，但是没有这句也能发生。。
-	//RootBox->SetGenerateOverlapEvents(true);
-
 	// 如果没有下面这一句，会出现warning：
 	//LogActor: Warning: BP_Bullet_C /Game/Maps/UEDPIE_0_GameMap.GameMap:PersistentLevel.BP_Bullet_C_0 has natively added scene component(s), but none of them were set as the actor's RootComponent - picking one arbitrarily
 	//应该是由AShipController调用SpawnActor动态生成导致。
 	SetRootComponent(RootBox);
+
+	// 使其能够发生Overlap事件
+	RootBox->SetGenerateOverlapEvents(true);
+
+	//链接碰撞以后的回调函数
+	RootBox->OnComponentBeginOverlap.AddDynamic(this, &ABulletController::OnOverlap);
+
 }
 
 // Called when the game starts or when spawned
@@ -48,3 +53,15 @@ void ABulletController::Tick(float DeltaTime)
 	}
 }
 
+// Overlap后的回调函数
+void ABulletController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+	if (OtherActor->IsA(AEnemyController::StaticClass())) {
+		float time = GetWorld()->GetTimeSeconds();
+		UE_LOG(LogTemp, Warning, TEXT("%f: Bullet %s Overlap."), time, *GetName());
+
+		this->Destroy();
+		OtherActor->Destroy();
+	}
+}

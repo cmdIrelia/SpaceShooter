@@ -30,4 +30,13 @@ public:
 	UPROPERTY(EditAnywhere)
 	float Speed = 400.0f;
 
+	/// 碰撞相关
+	// Overlap后的回调函数
+	UFUNCTION()
+		void OnOverlap(UPrimitiveComponent *OverlapComponent,
+			AActor *OtherActor,
+			UPrimitiveComponent *OtherComponent,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult &SweepResult);
 };

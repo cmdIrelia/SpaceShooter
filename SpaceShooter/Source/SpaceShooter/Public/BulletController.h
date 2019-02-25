@@ -26,6 +26,8 @@ public:
 	UPROPERTY(EditAnywhere)
 	UShapeComponent *RootBox;
 
+	/// 运动相关
 	UPROPERTY(EditAnywhere)
 	float Speed = 400.0f;
+
 };

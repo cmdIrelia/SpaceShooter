@@ -12,6 +12,10 @@ ABulletController::ABulletController()
 
 	// 构建一个默认会出现的Subobject，出现在detail树下面，名字为什么不叫root我也不知道.
 	RootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
+
+	//使其能够参与发生Overlap事件，但是没有这句也能发生。。
+	//RootBox->SetGenerateOverlapEvents(true);
+
 	// 如果没有下面这一句，会出现warning：
 	//LogActor: Warning: BP_Bullet_C /Game/Maps/UEDPIE_0_GameMap.GameMap:PersistentLevel.BP_Bullet_C_0 has natively added scene component(s), but none of them were set as the actor's RootComponent - picking one arbitrarily
 	//应该是由AShipController调用SpawnActor动态生成导致。
@@ -43,3 +47,4 @@ void ABulletController::Tick(float DeltaTime)
 		//UE_LOG(LogTemp, Warning, TEXT("Bullet %s destroyed"), *ActorName);
 	}
 }
+

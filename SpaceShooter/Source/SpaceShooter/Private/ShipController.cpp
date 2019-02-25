@@ -4,6 +4,9 @@
 
 #include <Components/BoxComponent.h>
 #include "BulletController.h"
+#include <Components/PrimitiveComponent.h>
+#include "EnemyController.h"
+#include "Kismet/GameplayStatics.h"
 
 // Sets default values
 AShipController::AShipController()
@@ -13,9 +16,16 @@ AShipController::AShipController()
 
 	// 构建一个默认会出现的Subobject，出现在detail树下面，名字为什么不叫root我也不知道.
 	CollisionBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
+	
+	//CollisionBox->bGenerateOverlapEvents = true;	//访问权限不对
+	CollisionBox->SetGenerateOverlapEvents(true);
+	//链接碰撞以后的回调函数
+	CollisionBox->OnComponentBeginOverlap.AddDynamic(this, &AShipController::OnOverlap);
 
 	// AutoPossessPlayer 这个变量是Pawn类里面自带的
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
+
+	UE_LOG(LogTemp, Warning, TEXT("AShipController()"))
 }
 
 // Called when the game starts or when spawned
@@ -75,5 +85,20 @@ void AShipController::OnShoot()
 
 		// 创建一个新的bullet对象了
 		World->SpawnActor<ABulletController>(BulletBlueprint, Location, FRotator::ZeroRotator);
+	}
+}
+
+// Overlap后的回调函数
+void AShipController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor *OtherActor, UPrimitiveComponent *OtherComponent,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult &SweepResult)
+{
+	float time = GetWorld()->GetTimeSeconds();
+	UE_LOG(LogTemp, Warning, TEXT("%f: Overlap Event."),time)
+
+	if (OtherActor->IsA(AEnemyController::StaticClass())) {
+		Died = true;
+		this->SetActorHiddenInGame(true);
+
+		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 }

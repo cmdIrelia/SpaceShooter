@@ -12,6 +12,7 @@ AEnemyController::AEnemyController()
 
 	// 构建一个默认会出现的Subobject，出现在detail树下面，名字为什么不叫root我也不知道.
 	RootBox = CreateDefaultSubobject<UBoxComponent>(TEXT("Root"));
+	SetRootComponent(RootBox);
 }
 
 // Called when the game starts or when spawned

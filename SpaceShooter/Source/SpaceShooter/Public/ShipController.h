@@ -46,5 +46,17 @@ public:
 	void OnShoot();
 
 
+	/// 碰撞相关
+	// 碰撞后GameOver
+	bool Died;
+
+	// Overlap后的回调函数
+	UFUNCTION()
+		void OnOverlap(UPrimitiveComponent *OverlapComponent,
+			AActor *OtherActor,
+			UPrimitiveComponent *OtherComponent,
+			int32 OtherBodyIndex,
+			bool bFromSweep,
+			const FHitResult &SweepResult);
 
 };

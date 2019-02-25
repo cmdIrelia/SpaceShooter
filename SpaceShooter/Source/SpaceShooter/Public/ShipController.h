@@ -33,7 +33,9 @@ public:
 	UPROPERTY(EditAnywhere)
 	float Speed = 10.0f;
 
+	// 键盘事件
 	void Move_XAxis(float AxisValue);
+	// 键盘事件
 	void Move_YAxis(float AxisValue);
 
 	FVector CurrentVelocity;
@@ -43,6 +45,7 @@ public:
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	TSubclassOf<class ABulletController> BulletBlueprint;
 
+	// 键盘事件
 	void OnShoot();
 
 
@@ -58,5 +61,9 @@ public:
 			int32 OtherBodyIndex,
 			bool bFromSweep,
 			const FHitResult &SweepResult);
+
+	/// 重启游戏
+	//键盘事件
+	void OnRestart();
 
 };

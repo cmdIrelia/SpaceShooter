@@ -30,6 +30,9 @@ AShipController::AShipController()
 	// AutoPossessPlayer 这个变量是Pawn类里面自带的
 	AutoPossessPlayer = EAutoReceiveInput::Player0;
 
+	// Alive at start
+	Died = false;
+
 }
 
 // Called when the game starts or when spawned
@@ -65,6 +68,9 @@ void AShipController::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 	// 射击动作
 	PlayerInputComponent->BindAction("Shoot", IE_Pressed, this, &AShipController::OnShoot);
+
+	//重启游戏
+	PlayerInputComponent->BindAction("Restart", IE_Pressed, this, &AShipController::OnRestart).bExecuteWhenPaused = true;
 }
 
 // Move_XAxis
@@ -104,5 +110,14 @@ void AShipController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor *O
 		this->SetActorHiddenInGame(true);
 
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
+	}
+}
+
+void AShipController::OnRestart()
+{
+	if (Died) {
+		// 重启当前Level
+		// 参数3：if true options are reset, if false options are carried over from current level
+		UGameplayStatics::OpenLevel(this, *GetWorld()->GetName(), false);
 	}
 }

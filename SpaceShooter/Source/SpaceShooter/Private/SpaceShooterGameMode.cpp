@@ -21,7 +21,7 @@ void ASpaceShooterGameMode::Tick(float DeltaTime)
 		// Don't know why.
 		float difficultyPercentage = FMath::Min(GameTimer / MINIMUM_INTERVAL, 1.f);
 		EnemyTimer = MAXIMUM_INTERVAL - (MAXIMUM_INTERVAL - MINIMUM_INTERVAL)*difficultyPercentage;
-		UE_LOG(LogTemp, Warning, TEXT("EnemyTimer on SpawnActor: %f"), EnemyTimer);
+		//UE_LOG(LogTemp, Warning, TEXT("EnemyTimer on SpawnActor: %f"), EnemyTimer);
 		
 		UWorld *World = GetWorld();
 		if (World) {

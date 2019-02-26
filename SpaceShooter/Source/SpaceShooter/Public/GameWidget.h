@@ -26,9 +26,22 @@ public:
 
 	void Load();
 	
+	/// 分数显示
+	UPROPERTY()
+	UTextBlock *ScoreText;
+
 	void SetScore(int score);
 	void OnGameOver(int score);
 
+	/// 填装状态显示
 	UPROPERTY()
-	UTextBlock *ScoreText;
+	UTextBlock *LoadStateText;
+
+	void SetLoadingState();
+	void LoadFinished();
+
+	// 时间显示
+	UPROPERTY()
+	UTextBlock *LiveTimeText;
+	void SetTime(float time);
 };

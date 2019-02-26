@@ -30,6 +30,12 @@ public:
 	UPROPERTY(EditDefaultsOnly)
 	float Speed = 400.0f;
 
+	UPROPERTY(EditDefaultsOnly)
+	float YBoard = 650;
+
+	UPROPERTY(EditDefaultsOnly)
+	float XBoard = 650;
+
 	/// 碰撞相关
 	// Overlap后的回调函数
 	UFUNCTION()

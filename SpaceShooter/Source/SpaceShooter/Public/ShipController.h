@@ -33,6 +33,12 @@ public:
 	UPROPERTY(EditAnywhere)
 	float Speed = 10.0f;
 
+	UPROPERTY(EditAnywhere)
+	float XBoard = 650;
+
+	UPROPERTY(EditAnywhere)
+	float YBoard = 650;
+
 	// 键盘事件
 	void Move_XAxis(float AxisValue);
 	// 键盘事件
@@ -48,6 +54,11 @@ public:
 	// 键盘事件
 	void OnShoot();
 
+	// 填装时间
+	UPROPERTY(EditDefaultsOnly, Category = "Spawning")
+	float ReloadTime = 0.5f;
+
+	float LastFireTime = 0;
 
 	/// 碰撞相关
 	// 碰撞后GameOver

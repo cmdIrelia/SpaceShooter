@@ -9,6 +9,9 @@
 #include "Kismet/GameplayStatics.h"
 #include "SpaceShooterGameMode.h"
 
+#include <EngineGlobals.h>
+#include <Runtime/Engine/Classes/Engine/Engine.h>
+
 // Sets default values
 AShipController::AShipController()
 {
@@ -58,6 +61,14 @@ void AShipController::Tick(float DeltaTime)
 		SetActorLocation(NewLocation);
 	}
 
+	// 填装时间
+	if (LastFireTime >= ReloadTime) {
+		LastFireTime = ReloadTime;
+		((ASpaceShooterGameMode*)GetWorld()->GetAuthGameMode())->LoadFinished();
+	}
+	LastFireTime += DeltaTime;	//确保LastFireTime能够>=ReloadTime
+
+	//GEngine->AddOnScreenDebugMessage(-1, 1.f, FColor::Red, FString::Printf(TEXT("difficultyPercentage: x= %f y = %f"), GetActorLocation().X, GetActorLocation().Y));
 }
 
 // Called to bind functionality to input
@@ -79,12 +90,33 @@ void AShipController::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 // Move_XAxis
 void AShipController::Move_XAxis(float AxisValue)
 {
+	auto Location = GetActorLocation();
+	//UE_LOG(LogTemp, Warning, TEXT("Move_XAxis %f %f"),AxisValue,Location.X);
+	if (Location.X >= XBoard && AxisValue > 0) {
+		//UE_LOG(LogTemp, Warning, TEXT("Move_XAxis return."));
+		CurrentVelocity.X = 0;
+		return;
+	}
+	if (Location.X <= -XBoard && AxisValue < 0) {
+		//UE_LOG(LogTemp, Warning, TEXT("Move_XAxis return."));
+		CurrentVelocity.X = 0;
+		return;
+	}
 	CurrentVelocity.X = AxisValue * 100.0f;
 }
 
 // Move_YAxis
 void AShipController::Move_YAxis(float AxisValue)
 {
+	auto Location = GetActorLocation();
+	if (Location.Y >= YBoard && AxisValue > 0) {
+		CurrentVelocity.Y = 0;
+		return;
+	}
+	if (Location.Y <= -YBoard && AxisValue < 0) {
+		CurrentVelocity.Y = 0;
+		return;
+	}
 	CurrentVelocity.Y = AxisValue * 100.0f;
 }
 
@@ -94,10 +126,16 @@ void AShipController::OnShoot()
 	UWorld *World = GetWorld();
 
 	if (World) {
-		FVector Location = GetActorLocation();
+		if (LastFireTime >= ReloadTime) {	//填装完成
+			FVector Location = GetActorLocation();
 
-		// 创建一个新的bullet对象了
-		World->SpawnActor<ABulletController>(BulletBlueprint, Location, FRotator::ZeroRotator);
+			// 创建一个新的bullet对象了
+			World->SpawnActor<ABulletController>(BulletBlueprint, Location, FRotator::ZeroRotator);
+
+			// 开始填装
+			((ASpaceShooterGameMode*)GetWorld()->GetAuthGameMode())->OnReloading();
+			LastFireTime = 0.f;
+		}
 	}
 }
 

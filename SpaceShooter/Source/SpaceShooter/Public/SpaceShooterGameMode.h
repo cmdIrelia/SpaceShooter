@@ -31,12 +31,24 @@ public:
 	// 参考其他的类声明成 virtual 和 override
 	virtual void Tick(float DeltaTime) override;
 
+	// 生成Enemies  UPROPERTY可以修改变量值
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	TSubclassOf<class AEnemyController> EnemyBlueprint;
 
 	float EnemyTimer;
 	float GameTimer;
 
+	// 生成UI  UFUNCTION+BlueprintCallable可以传参进来
+	UFUNCTION(BlueprintCallable, Category = "UMG Game")
+	void ChangeMenuWidget(TSubclassOf<class UUserWidget> NewWidgetClass);
+
 protected:
 	int Score = 0;
+
+	// UI相关 暴露给蓝图 NOTE:生成的类中，大量的使用了TSubclassOf
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "UMG Game")
+	TSubclassOf<class UUserWidget> StartingWidgetClass;
+
+	UPROPERTY()
+	UUserWidget *CurrentWidget;
 };

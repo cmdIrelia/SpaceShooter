@@ -3,10 +3,18 @@
 #include "SpaceShooterGameMode.h"
 
 #include "EnemyController.h"
+#include "GameWidget.h"
 
 void ASpaceShooterGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+
+	// 将显示的Widget修改为BP中的StartingWidgetClass
+	ChangeMenuWidget(StartingWidgetClass);
+
+	// cast
+	((UGameWidget*)CurrentWidget)->Load();
+
 }
 
 void ASpaceShooterGameMode::Tick(float DeltaTime)
@@ -27,6 +35,22 @@ void ASpaceShooterGameMode::Tick(float DeltaTime)
 		if (World) {
 			FVector Location = FVector(600.f, FMath::RandRange(-800.f, 800.f), 70.f);
 			World->SpawnActor<AEnemyController>(EnemyBlueprint, Location, FRotator::ZeroRotator);
+		}
+	}
+}
+
+void ASpaceShooterGameMode::ChangeMenuWidget(TSubclassOf<class UUserWidget> NewWidgetClass)
+{
+	if (CurrentWidget != nullptr) {
+		CurrentWidget->RemoveFromViewport();
+		CurrentWidget = nullptr;
+	}
+
+	if (NewWidgetClass != nullptr) {
+		CurrentWidget = CreateWidget<UUserWidget>(GetWorld(), NewWidgetClass);
+
+		if (CurrentWidget != nullptr) {
+			CurrentWidget->AddToViewport();
 		}
 	}
 }

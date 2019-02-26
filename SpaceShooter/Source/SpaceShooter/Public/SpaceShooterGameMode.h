@@ -15,6 +15,10 @@ class SPACESHOOTER_API ASpaceShooterGameMode : public AGameMode
 	GENERATED_BODY()
 
 public:
+	ASpaceShooterGameMode();
+
+	~ASpaceShooterGameMode();
+
 	UPROPERTY(EditAnywhere, Category = "Spawning")
 	float MINIMUM_INTERVAL = 1.0f;
 	
@@ -41,6 +45,9 @@ public:
 	// 生成UI  UFUNCTION+BlueprintCallable可以传参进来
 	UFUNCTION(BlueprintCallable, Category = "UMG Game")
 	void ChangeMenuWidget(TSubclassOf<class UUserWidget> NewWidgetClass);
+
+	void IncrementScore();
+	void OnGameOver();
 
 protected:
 	int Score = 0;

@@ -5,6 +5,18 @@
 #include "EnemyController.h"
 #include "GameWidget.h"
 
+ASpaceShooterGameMode::ASpaceShooterGameMode()
+{
+	//NOTE: OpenLevel 操作会删除GameMode并且重新new一个.
+	UE_LOG(LogTemp, Warning, TEXT("ASpaceShooterGameMode()"));
+}
+
+ASpaceShooterGameMode::~ASpaceShooterGameMode()
+{
+	UE_LOG(LogTemp, Warning, TEXT("delete ASpaceShooterGameMode()"));
+}
+
+
 void ASpaceShooterGameMode::BeginPlay()
 {
 	Super::BeginPlay();
@@ -15,6 +27,7 @@ void ASpaceShooterGameMode::BeginPlay()
 	// cast
 	((UGameWidget*)CurrentWidget)->Load();
 
+	UE_LOG(LogTemp, Warning, TEXT("ASpaceShooterGameMode BeginPlay()"));
 }
 
 void ASpaceShooterGameMode::Tick(float DeltaTime)
@@ -53,4 +66,16 @@ void ASpaceShooterGameMode::ChangeMenuWidget(TSubclassOf<class UUserWidget> NewW
 			CurrentWidget->AddToViewport();
 		}
 	}
+}
+
+void ASpaceShooterGameMode::IncrementScore()
+{
+	Score += 100;
+	((UGameWidget*)CurrentWidget)->SetScore(Score);
+
+}
+
+void ASpaceShooterGameMode::OnGameOver()
+{
+	((UGameWidget*)CurrentWidget)->OnGameOver(Score);
 }

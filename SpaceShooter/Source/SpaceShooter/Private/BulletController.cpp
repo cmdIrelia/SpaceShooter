@@ -4,6 +4,7 @@
 
 #include <Components/BoxComponent.h>
 #include "EnemyController.h"
+#include "SpaceShooterGameMode.h"
 
 // Sets default values
 ABulletController::ABulletController()
@@ -60,5 +61,8 @@ void ABulletController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor 
 		//float time = GetWorld()->GetTimeSeconds();
 		this->Destroy();
 		OtherActor->Destroy();
+
+		//增加分数
+		((ASpaceShooterGameMode*)GetWorld()->GetAuthGameMode())->IncrementScore();
 	}
 }

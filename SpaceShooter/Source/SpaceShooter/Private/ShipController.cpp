@@ -7,6 +7,7 @@
 #include <Components/PrimitiveComponent.h>
 #include "EnemyController.h"
 #include "Kismet/GameplayStatics.h"
+#include "SpaceShooterGameMode.h"
 
 // Sets default values
 AShipController::AShipController()
@@ -33,6 +34,8 @@ AShipController::AShipController()
 	// Alive at start
 	Died = false;
 
+	//Note: OpenLevel操作会把属于这个Level的示例全部析构掉
+	UE_LOG(LogTemp, Warning, TEXT("call AShipController()"));
 }
 
 // Called when the game starts or when spawned
@@ -109,6 +112,9 @@ void AShipController::OnOverlap(UPrimitiveComponent *OverlapComponent, AActor *O
 		Died = true;
 		this->SetActorHiddenInGame(true);
 
+		//游戏结束
+		((ASpaceShooterGameMode*)GetWorld()->GetAuthGameMode())->OnGameOver();
+
 		UGameplayStatics::SetGamePaused(GetWorld(), true);
 	}
 }
@@ -119,5 +125,7 @@ void AShipController::OnRestart()
 		// 重启当前Level
 		// 参数3：if true options are reset, if false options are carried over from current level
 		UGameplayStatics::OpenLevel(this, *GetWorld()->GetName(), false);
+		//NOTE: OpenLevel 操作会删除GameMode并且重新new一个.
+		//Note: OpenLevel操作会把属于这个Level的示例全部析构掉.
 	}
 }
